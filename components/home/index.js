@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text, View, ActivityIndicator, FlatList } from 'react-native';
+import { Text, View, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import Card from "react-bootstrap/Card";
 
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
@@ -25,8 +26,8 @@ const Home = ({navigation}) => {
         "count":10
       })
     })
-    .then(async (response) => response.json())
-    .then(async ({metadata, response}) => {
+    .then((response) => response.json())
+    .then(({metadata, response}) => {
         setLoading(false);
         if(metadata.status == 200){
           
@@ -48,22 +49,58 @@ const Home = ({navigation}) => {
     fetchData();
   }, []);
 
-  const renderData = (data) => {
-    return (<Text>{data}</Text>);
-  }
+  const Item = ({ title }) => (
+    <View >
+      <Text >{title}</Text>
+    </View>
+  );
+
+  const renderItem = ({ item }) => (
+    <View style={styles.container}>
+      <Text>NIP</Text>
+      <Item title={item.nip} />
+      <Text>Nama</Text>
+      <Item title={item.nama} />
+      <Text>Alamat</Text>
+      <Item title={item.alamat} />
+    </View>
+  )
 
   return (
     <View>
       {
         loading && <ActivityIndicator size="small" color="#B983FF" />        
       }
-      {
+      
+      {/* {
          data.length > 0 && (
-          data.map(item => (<Text key={item['nip']}>{item['nama']}</Text>))
+          data.map(item => (
+          <Text key={item['nip']}>{item['nama']}</Text>
+          // <View>
+          //   <Card>
+          //     <Card.Body>This is some text within a card body.</Card.Body>
+          //   </Card>
+          // </View>
+          ))
         )
-      }
+      } */}
+
+      <FlatList
+        data={data}
+        keyExtractor={item => item.nip}
+        renderItem={renderItem}
+      />
+      
     </View>
   );
 }
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: {  
+    backgroundColor: '#fff',
+    margin: 10,
+    padding: 15,
+  },
+});
