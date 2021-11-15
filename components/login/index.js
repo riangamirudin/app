@@ -73,7 +73,7 @@ return (
       </View>
       <TextInput style={styles.inputText} onChangeText={(username)=> setUsername(username)} placeholder="Username" />
       
-      <TextInput style={styles.inputText} onChangeText={(password)=> setPassword(password)} placeholder="Password" />
+      <TextInput secureTextEntry={true} style={styles.inputText} onChangeText={(password)=> setPassword(password)} placeholder="Password" />
       <TouchableOpacity style={styles.buttonDefault} onPress={handleLogin}>          
         <View>
           {
